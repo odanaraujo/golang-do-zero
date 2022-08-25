@@ -2,28 +2,42 @@ package main
 
 import "fmt"
 
-type pessoa struct {
-	nome             string
-	idade            uint8
-	altura           float32
-	dataDeNascimento string
-}
-
-type estudante struct {
-	pessoa
-	curso   string
-	periodo uint8
-	campus  string
-}
-
 func main() {
-	fmt.Println("Herança")
 
-	createPeople := pessoa{"Dan", 32, 1.94, "11/12/1989"}
+	fmt.Println("Ponteiros")
+	variavel1 := 10
+	variavel2 := variavel1
 
-	createStudent := estudante{createPeople, "Sistema da Informação", 4, "Federal"}
+	fmt.Println(variavel1)
+	fmt.Println(variavel2)
 
-	fmt.Println(createStudent)
-	fmt.Println(createStudent.altura)
+	variavel1++
 
+	fmt.Println("===== Sem ponteiro ====")
+	fmt.Println(variavel1)
+	fmt.Println(variavel2)
+	/*
+		A variável 2 continua com o mesmo valor 10, pois, ele é uma cópia da variável 1,
+		mas não tá no mesmo endereço de memória onde essa variável tá salta
+	*/
+
+	var variavelComPonteiro1 uint8
+	var variavelComPonteiro2 *uint8
+
+	fmt.Println(variavelComPonteiro1) //0
+	fmt.Println(variavelComPonteiro2) // nil
+
+	variavelComPonteiro1 = 10
+	variavelComPonteiro2 = &variavelComPonteiro1
+
+	fmt.Println(variavelComPonteiro1) //10
+	fmt.Println(variavelComPonteiro2) //0x1400001c092 -> valor da memória da variável
+
+	fmt.Println(variavelComPonteiro1)
+	fmt.Println(*variavelComPonteiro2) // desreferenciação -> valor vai sair 10
+
+	variavelComPonteiro1 = 100
+
+	fmt.Println(variavelComPonteiro1)
+	fmt.Println(*variavelComPonteiro2) // ambos saem 100, pois, estão no mesmo endereço de memória.
 }
