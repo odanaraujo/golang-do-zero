@@ -9,27 +9,21 @@ type pessoa struct {
 	dataDeNascimento string
 }
 
-func main() {
-	fmt.Println("Struct")
+type estudante struct {
+	pessoa
+	curso   string
+	periodo uint8
+	campus  string
+}
 
-	// primeira forma de declarar uma struct
+func main() {
+	fmt.Println("Herança")
 
 	createPeople := pessoa{"Dan", 32, 1.94, "11/12/1989"}
 
-	fmt.Println(createPeople)
+	createStudent := estudante{createPeople, "Sistema da Informação", 4, "Federal"}
 
-	// segunda forma de declarar uma struct
+	fmt.Println(createStudent)
+	fmt.Println(createStudent.altura)
 
-	var createPeopleTwo pessoa
-	createPeopleTwo.nome = "Sabrina"
-	createPeopleTwo.idade = 33
-	createPeopleTwo.altura = 1.74
-	createPeopleTwo.dataDeNascimento = "13/10/1988"
-
-	fmt.Println(createPeopleTwo)
-
-	// terceira forma de declarar uma struct
-
-	createPeopleThree := pessoa{nome: "Maria Julia", idade: 1, altura: 1.10, dataDeNascimento: "27/10/2021"}
-	fmt.Println(createPeopleThree)
 }
