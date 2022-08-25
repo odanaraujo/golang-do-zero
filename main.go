@@ -1,43 +1,42 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 func main() {
 
-	fmt.Println("Ponteiros")
-	variavel1 := 10
-	variavel2 := variavel1
+	var array1 [5]int8
+	array1[0] = 1
+	fmt.Println(array1)
 
-	fmt.Println(variavel1)
-	fmt.Println(variavel2)
+	array2 := [2]string{"Dan", "Araújo"}
+	fmt.Println(array2)
 
-	variavel1++
-
-	fmt.Println("===== Sem ponteiro ====")
-	fmt.Println(variavel1)
-	fmt.Println(variavel2)
 	/*
-		A variável 2 continua com o mesmo valor 10, pois, ele é uma cópia da variável 1,
-		mas não tá no mesmo endereço de memória onde essa variável tá salta
+		Uma forma de deixar mais dinâmico, onde os três pontinhos,
+		vão fixar o tamanho desse array, de acordo com a quantidade de valores informados
 	*/
+	array3 := [...]int{1, 2, 3, 4, 5, 6}
+	fmt.Println(array3)
 
-	var variavelComPonteiro1 uint8
-	var variavelComPonteiro2 *uint8
+	// SLICE
 
-	fmt.Println(variavelComPonteiro1) //0
-	fmt.Println(variavelComPonteiro2) // nil
+	slice := []string{"Dan", "Sabrina"}
+	fmt.Println(slice)
 
-	variavelComPonteiro1 = 10
-	variavelComPonteiro2 = &variavelComPonteiro1
+	slice = append(slice, "Maju")
+	fmt.Println(slice)
 
-	fmt.Println(variavelComPonteiro1) //10
-	fmt.Println(variavelComPonteiro2) //0x1400001c092 -> valor da memória da variável
+	//slice não é uma array
+	fmt.Println(reflect.TypeOf(array1))
+	fmt.Println(reflect.TypeOf(slice))
 
-	fmt.Println(variavelComPonteiro1)
-	fmt.Println(*variavelComPonteiro2) // desreferenciação -> valor vai sair 10
+	slice2 := array3[1:3] //1 é inclusivo e 3 é exclusivo
+	fmt.Println(slice2)
 
-	variavelComPonteiro1 = 100
+	array3[1] = 4
 
-	fmt.Println(variavelComPonteiro1)
-	fmt.Println(*variavelComPonteiro2) // ambos saem 100, pois, estão no mesmo endereço de memória.
+	fmt.Println(slice2)
 }
