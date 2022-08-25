@@ -4,22 +4,41 @@ import "fmt"
 
 func main() {
 
-	/*
-		make é uma função que serve para criar uma fatia
-		ele recebe três parâmetros: 1 - tipo do slice 2 - o tamanho do slice 3 - Capacidade máxima do slice
-		caso passe da capacidade, ele dobra a capacidade inicial. No exemplo abaixo, começa no 8 e pula para 16
-	*/
+	//chave e valor tem que ser do mesmo tipo
+	usuario := map[string]string{
+		"nome":      "Dan",
+		"sobreNome": "Araújo",
+		"idade":     "32",
+	}
 
-	slice := make([]uint16, 2, 4)
+	fmt.Println(usuario)
+	fmt.Println(usuario["nome"], usuario["sobreNome"], "Tem", usuario["idade"], "anos")
 
-	slice = append(slice, 10, 20, 30, 50, 100, 200, 300)
+	//map aninhado
 
-	fmt.Println(len(slice))
-	fmt.Println(cap(slice))
-	fmt.Println(slice)
+	usuario2 := map[string]map[string]string{
+		"dadosPessoais": {
+			"nome":      "Sabrina",
+			"sobreNome": "Lopes",
+			"idade":     "33",
+		},
+		"endereco": {
+			"rua": "Rua do golang",
+			"cep": "09494030",
+		},
+	}
 
-	slice2 := make([]uint16, 0)
+	fmt.Println(usuario2["endereco"]["rua"])
 
-	slice2 = append(slice2, 87, 90, 8)
-	fmt.Println(slice2)
+	//deletando
+	delete(usuario2, "endereco")
+	fmt.Println(usuario2)
+
+	//adicionando um novo map
+	usuario2["cursos"] = map[string]string{
+		"Sistema da informação": "completo",
+		"Enfermagem":            "Cursando",
+	}
+
+	fmt.Println(usuario2)
 }
