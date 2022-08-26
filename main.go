@@ -1,53 +1,53 @@
 package main
 
-import "fmt"
-
-func diaDaSemana(dia int) string {
-	switch dia {
-	case 1:
-		return "Domingo"
-	case 2:
-		return "Segunda"
-	case 3:
-		return "Terça"
-	case 4:
-		return "Quarta"
-	case 5:
-		return "Quinta"
-	case 6:
-		return "Sexta"
-	default:
-		return "Escolha um dia válido"
-	}
-}
-
-func diaDaSemana2(dia int) string {
-	switch {
-	case dia == 1:
-		return "Domingo"
-	case dia == 2:
-		return "Segunda"
-	case dia == 3:
-		return "Terça"
-	case dia == 4:
-		return "Quarta"
-	case dia == 5:
-		return "Quinta"
-	case dia == 6:
-		return "Sexta"
-	case dia == 7:
-		return "Sábado"
-	default:
-		return "Informe um dia da semana válido"
-	}
-}
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
+	i := 0
 
-	//padrão
-	fmt.Println(diaDaSemana(10))
+	//opção de for
+	for i < 10 {
+		i++
+		time.Sleep(2 * time.Second)
+		fmt.Println("Incrementando i")
+	}
 
-	// outra forma de criar switch
-	fmt.Println(diaDaSemana2(1))
+	//for padrão
+	for j := 10; j > 0; j-- {
+		time.Sleep(2 * time.Second)
+		fmt.Println("Decrementando J")
+	}
 
+	//for em uma array
+
+	nomes := [3]string{"Dan", "Sabrina", "Maju"}
+
+	for indice, nome := range nomes {
+		time.Sleep(time.Second)
+		fmt.Println(indice, nome)
+	}
+
+	//for em uma string
+	for indice, letra := range "PALAVRA" {
+		time.Sleep(time.Second)
+		fmt.Println(indice, string(letra)) // colocar string(letra) caso contrário, traz o código da tabela asc
+	}
+
+	//for em um map
+
+	usuario := map[string]string{
+		"nome":      "Dan",
+		"sobreNome": "Araújo",
+		"idade":     "32",
+		"altura":    "184",
+	}
+
+	slice := make([]string, 0)
+	for _, infos := range usuario {
+		slice = append(slice, infos)
+	}
+	fmt.Println(slice[0])
 }
