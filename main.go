@@ -2,19 +2,20 @@ package main
 
 import "fmt"
 
+func fibonacci(posicao uint) uint {
+	if posicao <= 1 {
+		return posicao
+	}
+	teste := fibonacci(posicao-2) + fibonacci(posicao-1)
+	fmt.Println(teste)
+	return teste
+}
+
 func main() {
 
 	/**
-	função que não tem nome
+	Função recursiva são funções que chamam ela mesma.
 	*/
 
-	func(texto string) {
-		fmt.Println(texto)
-	}("Dan")
-
-	retorno := func(texto string, numero int) string {
-		return fmt.Sprintf("Recebido -> %s %d", texto, numero)
-	}("Passando parâmetro", 10)
-
-	fmt.Println(retorno)
+	fmt.Println(fibonacci(3))
 }
