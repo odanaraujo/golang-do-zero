@@ -2,27 +2,25 @@ package main
 
 import "fmt"
 
-func closure() func() {
-	texto := "Dentro da função closure"
+func inverterSinal(numero int) int {
+	return numero * -1
+}
 
-	funcao := func() {
-		fmt.Println(texto)
-	}
-
-	return funcao
+func inverterSinalComPonteiro(numero *int) {
+	*numero = *numero * -1
 }
 
 func main() {
 
-	/**
-	funções que referenciam variáveis que estão fora do seu corpo
-	*/
+	numero := 20
+	numeroInvertido := inverterSinal(numero)
+	fmt.Println(numeroInvertido)
+	fmt.Println(numero)
 
-	texto := "Dentro da função main"
-	fmt.Println(texto)
+	fmt.Println("===== com ponteiro =====")
+	fmt.Println()
 
-	funcaoNova := closure() //variavel do tipo funcao
-
-	funcaoNova() //a referência vai ser dentro da função closure(texto dentro dela será impresso)
-
+	novoNumero := 40
+	inverterSinalComPonteiro(&novoNumero)
+	fmt.Println(novoNumero)
 }
