@@ -1,43 +1,28 @@
 package main
 
-import (
-	"fmt"
-	"math"
-)
+import "fmt"
 
-type forma interface {
-	area() float64
-}
-
-func escreverArea(f forma) {
-	fmt.Printf("A área da forma é %2.0f\n", f.area())
-}
-
-type retangulo struct {
-	altura  float64
-	largura float64
-}
-
-func (r retangulo) area() float64 {
-	return r.altura * r.largura
-}
-
-type circulo struct {
-	raio float64
-}
-
-func (c circulo) area() float64 {
-	return math.Pow(c.raio, 2) * math.Pi
+func generica(interf interface{}) {
+	fmt.Println(interf)
 }
 
 func main() {
 
 	/*
-	 */
+		podemos passar, como parâmetro da função genêrica, qualquer tipo
+		int, string, bool, etc.
+		o fmt.println, por exemplo, funciona como genêrico
+	*/
 
-	ret := retangulo{10, 20}
-	escreverArea(ret)
+	generica("teste")
+	generica(1)
+	generica(true)
 
-	c := circulo{10}
-	escreverArea(c)
+	mapa := map[interface{}]interface{}{
+		1:            "string",
+		float32(100): true,
+		"string":     20,
+	}
+
+	fmt.Println(mapa)
 }
