@@ -27,8 +27,8 @@ func main() {
 	defer - Adiar a execução até o último momento possível.
 	*/
 
-	//defer funcao1()
-	//funcao2()
+	defer funcao1()
+	funcao2()
 
 	fmt.Println(alunoEstaAprovado(8, 8))
 }
