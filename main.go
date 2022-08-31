@@ -2,46 +2,42 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"math"
 )
 
-type usuario struct {
-	nome  string
-	idade uint8
+type forma interface {
+	area() float64
 }
 
-func (u usuario) salvar() {
-	fmt.Printf("Salvando os dados do usuário %s no banco de dados\n", u.nome)
-	time.Sleep(time.Second * 3)
-	fmt.Println("Salvo com sucesso!")
+func escreverArea(f forma) {
+	fmt.Printf("A área da forma é %2.0f\n", f.area())
 }
 
-func (u usuario) update() {
-	fmt.Printf("Atualizando os dados do usuário %s no banco de dados \n", u.nome)
-	time.Sleep(time.Second * 4)
-	fmt.Println("Dados atualizados com sucesso")
+type retangulo struct {
+	altura  float64
+	largura float64
 }
 
-func (u usuario) maiorDeIdade() bool {
-	return u.idade > 18
+func (r retangulo) area() float64 {
+	return r.altura * r.largura
 }
 
-func (u *usuario) felizAniversario() {
-	u.idade++
+type circulo struct {
+	raio float64
+}
+
+func (c circulo) area() float64 {
+	return math.Pow(c.raio, 2) * math.Pi
 }
 
 func main() {
 
 	/*
-		Tecnicamente, método não é igual a uma função
-		ela pode tá associada a uma struct, interface, etc.
-	*/
+	 */
 
-	usuario := usuario{"Dan", 32}
-	fmt.Println(usuario)
-	usuario.salvar()
-	usuario.update()
-	fmt.Println(usuario.maiorDeIdade())
-	usuario.felizAniversario()
-	fmt.Println(usuario.idade)
+	ret := retangulo{10, 20}
+	escreverArea(ret)
+
+	c := circulo{10}
+	escreverArea(c)
 }
