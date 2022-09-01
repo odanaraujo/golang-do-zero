@@ -19,11 +19,14 @@ func main() {
 
 	/*
 		msg := canal: espera receber um valor.
-		Entra na função escrever, no primeiro loop recebe a mensagem que o canal envia
-		programa finaliza e só imprime uma vez
+		Dessa vez, no for infinito, ele executa as 5 impressões no método escrever
+		porém, quando a goroutine finaliza, o canal não é fechado e ele fica esperando receber informações
+		ocasionando o deadloock - problema que não é informado em tempo de compilação, apenas execução
 	*/
-	msg := <-canal
-	fmt.Println(msg)
+	for {
+		msg := <-canal
+		fmt.Println(msg)
+	}
 }
 
 func escrever(texto string, canal chan string) {
