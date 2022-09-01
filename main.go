@@ -1,34 +1,40 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
 func main() {
 
-	canal1, canal2 := make(chan string), make(chan string)
+	tarefas := make(chan int, 45)    //crio um canal de tarefas
+	resultados := make(chan int, 45) //crio um canal com o resultado
 
-	go func() {
-		for {
-			time.Sleep(time.Millisecond * 500)
-			canal1 <- "Canal 1"
-		}
-	}()
+	go worker(tarefas, resultados) //crio uma goroutines
 
-	go func() {
-		for {
-			time.Sleep(time.Second * 2)
-			canal2 <- "Canal 2"
-		}
-	}()
-
-	for {
-		select {
-		case mensagemCanal1 := <-canal1:
-			fmt.Println(mensagemCanal1)
-		case mensagemCanal2 := <-canal2:
-			fmt.Println(mensagemCanal2)
-		}
+	//faço um for alimentando as tarefas
+	for i := 0; i < 45; i++ {
+		tarefas <- i
 	}
+
+	close(tarefas) //fechando o canal para não receber mais dados
+
+	// faço um for para printar o resultado
+	for i := 0; i < 45; i++ {
+		resultado := <-resultados
+		fmt.Println(resultado)
+	}
+
+}
+
+// <- antes do chan, recebe os dados. Depois do chan, é um canal que só envia dados
+func worker(tarefas <-chan int, resultados chan<- int) {
+	for numero := range tarefas {
+		resultados <- fibonacci(numero)
+	}
+}
+
+func fibonacci(posicao int) int {
+	if posicao <= 1 {
+		return posicao
+	}
+
+	return fibonacci(posicao-2) + fibonacci(posicao-1)
 }
