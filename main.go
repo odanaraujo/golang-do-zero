@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,35 +8,29 @@ import (
 
 type carro struct {
 	Marca         string `json:"marca"`
-	AnoFabricacao uint16 `json:"anoFabricacao"`
+	AnoFabricacao string `json:"anoFabricacao"`
 	Modelo        string `json:"modelo"`
 }
 
 func main() {
 
-	celta := carro{"Chebrollet", 2010, "2 portas"}
+	golJSON := `{"marca":"volkswagen", "anoFabricacao":"2020", "modelo":"4 portas"}`
 
-	infoCarroJSON, erro := json.Marshal(celta)
+	var gol carro
 
-	if erro != nil {
+	if erro := json.Unmarshal([]byte(golJSON), &gol); erro != nil {
 		log.Fatal(erro)
 	}
 
-	fmt.Println(infoCarroJSON)
-	fmt.Println(bytes.NewBuffer(infoCarroJSON))
+	fmt.Println(gol)
 
-	gol := map[string]string{
-		"marca":         "volkswagen",
-		"anoFabricacao": "2020",
-		"modelo":        "4 portas",
-	}
+	celtaJSON := `{"marca":"chevrolet", "anoFabricacao":"2010", "modelo":"4 portas"}`
+	celta := make(map[string]string)
 
-	infoCarroJSON2, erro := json.Marshal(gol)
-	if erro != nil {
+	if erro := json.Unmarshal([]byte(celtaJSON), &celta); erro != nil {
 		log.Fatal(erro)
 	}
 
-	fmt.Println(infoCarroJSON2)
-	fmt.Println(bytes.NewBuffer(infoCarroJSON2))
+	fmt.Println(celta)
 
 }
