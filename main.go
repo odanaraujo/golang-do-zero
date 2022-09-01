@@ -2,37 +2,33 @@ package main
 
 import (
 	"fmt"
-	"sync"
 	"time"
 )
 
 func main() {
 
 	/*
+		maneira mais utilizada para sincronizar as goroutines (fazendo-as rodar ao mesmo tempo)
+		chanel - pois é um canal de comunicação. Ele pode enviar ou receber dados.
 
-	 */
+	*/
 
-	var waitGroup sync.WaitGroup
+	canal := make(chan string)
 
-	waitGroup.Add(2) //adicionando duas goroutines que ele precisa esperar terminar
+	go escrever("Dan", canal) //chama o método goroutines
 
-	//primeira goroutine
-	go func() {
-		escrever("Dan")
-		waitGroup.Done() // -1 quando a função finaliza, ele termina e tira 1 goroutine do count 2.
-	}()
-
-	go func() {
-		escrever("Sabrina")
-		waitGroup.Done() // -1
-	}()
-
-	waitGroup.Wait() //fala para o programa para ele aguardar o waitgroup chegar em zero
+	/*
+		msg := canal: espera receber um valor.
+		Entra na função escrever, no primeiro loop recebe a mensagem que o canal envia
+		programa finaliza e só imprime uma vez
+	*/
+	msg := <-canal
+	fmt.Println(msg)
 }
 
-func escrever(texto string) {
+func escrever(texto string, canal chan string) {
 	for i := 0; i < 5; i++ {
-		fmt.Println(texto)
+		canal <- texto // tá enviando um valor para dentro do canal
 		time.Sleep(time.Second)
 	}
 }
