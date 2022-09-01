@@ -1,48 +1,43 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
-	"math/rand"
-	"time"
+	"log"
 )
+
+type carro struct {
+	Marca         string `json:"marca"`
+	AnoFabricacao uint16 `json:"anoFabricacao"`
+	Modelo        string `json:"modelo"`
+}
 
 func main() {
 
-	// pegar um ou mais canal e juntar em um só
+	celta := carro{"Chebrollet", 2010, "2 portas"}
 
-	canal := multiplexar(escrever("Dan"), escrever("Sabrina"))
+	infoCarroJSON, erro := json.Marshal(celta)
 
-	for i := 0; i < 10; i++ {
-		fmt.Println(<-canal)
+	if erro != nil {
+		log.Fatal(erro)
 	}
 
-}
+	fmt.Println(infoCarroJSON)
+	fmt.Println(bytes.NewBuffer(infoCarroJSON))
 
-func escrever(texto string) <-chan string {
-	canal := make(chan string)
+	gol := map[string]string{
+		"marca":         "volkswagen",
+		"anoFabricacao": "2020",
+		"modelo":        "4 portas",
+	}
 
-	go func() {
-		for {
-			canal <- fmt.Sprintf("Valor recebido %s", texto)
-			time.Sleep(time.Duration(rand.Intn(2000)))
-		}
-	}()
+	infoCarroJSON2, erro := json.Marshal(gol)
+	if erro != nil {
+		log.Fatal(erro)
+	}
 
-	return canal
-}
+	fmt.Println(infoCarroJSON2)
+	fmt.Println(bytes.NewBuffer(infoCarroJSON2))
 
-func multiplexar(canalEntrada1, canalEntrada2 <-chan string) <-chan string {
-	canalDeSaida := make(chan string)
-
-	go func() {
-		for {
-			select {
-			case message := <-canalEntrada1:
-				canalDeSaida <- message
-			case message := <-canalEntrada2:
-				canalDeSaida <- message
-			}
-		}
-	}()
-	return canalDeSaida
 }
