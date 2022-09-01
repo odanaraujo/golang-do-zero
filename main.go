@@ -2,17 +2,18 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 )
 
 func main() {
 
-	//a func main não necessita criar uma goroutines
+	// pegar um ou mais canal e juntar em um só
 
-	canal := escrever("Dan") //canal que só recebe
+	canal := multiplexar(escrever("Dan"), escrever("Sabrina"))
 
 	for i := 0; i < 10; i++ {
-		fmt.Println(<-canal) //valor que tá chegando no canal
+		fmt.Println(<-canal)
 	}
 
 }
@@ -23,9 +24,25 @@ func escrever(texto string) <-chan string {
 	go func() {
 		for {
 			canal <- fmt.Sprintf("Valor recebido %s", texto)
-			time.Sleep(time.Millisecond * 500)
+			time.Sleep(time.Duration(rand.Intn(2000)))
 		}
 	}()
 
 	return canal
+}
+
+func multiplexar(canalEntrada1, canalEntrada2 <-chan string) <-chan string {
+	canalDeSaida := make(chan string)
+
+	go func() {
+		for {
+			select {
+			case message := <-canalEntrada1:
+				canalDeSaida <- message
+			case message := <-canalEntrada2:
+				canalDeSaida <- message
+			}
+		}
+	}()
+	return canalDeSaida
 }
