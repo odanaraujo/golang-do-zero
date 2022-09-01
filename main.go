@@ -24,12 +24,16 @@ func main() {
 		no for abaixo (infinito) eu passo um segundo parâmetro que é o aberto
 		verifico se ele ainda se encontra em aberto, caso não eu paro a execução do for
 	*/
-	for {
-		msg, aberto := <-canal
-		fmt.Println(msg)
-		if !aberto {
-			break
-		}
+	// for {
+	// 	msg, aberto := <-canal
+	// 	fmt.Println(msg)
+	// 	if !aberto {
+	// 		break
+	// 	}
+	// }
+
+	for mensagem := range canal {
+		fmt.Println(mensagem)
 	}
 }
 
