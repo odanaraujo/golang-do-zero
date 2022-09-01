@@ -1,24 +1,34 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
 
-	/*
-		maneira mais utilizada para sincronizar as goroutines (fazendo-as rodar ao mesmo tempo)
-		chanel - pois é um canal de comunicação. Ele pode enviar ou receber dados.
+	canal1, canal2 := make(chan string), make(chan string)
 
-	*/
+	go func() {
+		for {
+			time.Sleep(time.Millisecond * 500)
+			canal1 <- "Canal 1"
+		}
+	}()
 
-	//canal com buffer só bloqueia quando atinge a capacidade total dele
-	canal := make(chan string, 2)
+	go func() {
+		for {
+			time.Sleep(time.Second * 2)
+			canal2 <- "Canal 2"
+		}
+	}()
 
-	canal <- "Dan"
-	canal <- "Programando em go"
-
-	mensagem := <-canal
-	mensagem2 := <-canal
-
-	fmt.Println(mensagem)
-	fmt.Println(mensagem2)
+	for {
+		select {
+		case mensagemCanal1 := <-canal1:
+			fmt.Println(mensagemCanal1)
+		case mensagemCanal2 := <-canal2:
+			fmt.Println(mensagemCanal2)
+		}
+	}
 }
