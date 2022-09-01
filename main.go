@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
 func main() {
 
@@ -13,34 +10,15 @@ func main() {
 
 	*/
 
-	canal := make(chan string)
+	//canal com buffer só bloqueia quando atinge a capacidade total dele
+	canal := make(chan string, 2)
 
-	go escrever("Dan", canal) //chama o método goroutines
+	canal <- "Dan"
+	canal <- "Programando em go"
 
-	/*
-		msg := canal: espera receber um valor.
-		Dessa vez, no for infinito, ele executa as 5 impressões no método escrever
-		no fim da execução do for dentro do método, eu fecho o canal
-		no for abaixo (infinito) eu passo um segundo parâmetro que é o aberto
-		verifico se ele ainda se encontra em aberto, caso não eu paro a execução do for
-	*/
-	// for {
-	// 	msg, aberto := <-canal
-	// 	fmt.Println(msg)
-	// 	if !aberto {
-	// 		break
-	// 	}
-	// }
+	mensagem := <-canal
+	mensagem2 := <-canal
 
-	for mensagem := range canal {
-		fmt.Println(mensagem)
-	}
-}
-
-func escrever(texto string, canal chan string) {
-	for i := 0; i < 5; i++ {
-		canal <- texto // tá enviando um valor para dentro do canal
-		time.Sleep(time.Second)
-	}
-	close(canal)
+	fmt.Println(mensagem)
+	fmt.Println(mensagem2)
 }
