@@ -20,12 +20,16 @@ func main() {
 	/*
 		msg := canal: espera receber um valor.
 		Dessa vez, no for infinito, ele executa as 5 impressões no método escrever
-		porém, quando a goroutine finaliza, o canal não é fechado e ele fica esperando receber informações
-		ocasionando o deadloock - problema que não é informado em tempo de compilação, apenas execução
+		no fim da execução do for dentro do método, eu fecho o canal
+		no for abaixo (infinito) eu passo um segundo parâmetro que é o aberto
+		verifico se ele ainda se encontra em aberto, caso não eu paro a execução do for
 	*/
 	for {
-		msg := <-canal
+		msg, aberto := <-canal
 		fmt.Println(msg)
+		if !aberto {
+			break
+		}
 	}
 }
 
@@ -34,4 +38,5 @@ func escrever(texto string, canal chan string) {
 		canal <- texto // tá enviando um valor para dentro do canal
 		time.Sleep(time.Second)
 	}
+	close(canal)
 }
