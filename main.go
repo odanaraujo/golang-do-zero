@@ -1,36 +1,14 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
+	"net/http"
 )
 
-type carro struct {
-	Marca         string `json:"marca"`
-	AnoFabricacao string `json:"anoFabricacao"`
-	Modelo        string `json:"modelo"`
-}
-
 func main() {
+	http.HandleFunc("/api/v1/home", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Seja bem vindo ao nosso site!"))
+	})
 
-	golJSON := `{"marca":"volkswagen", "anoFabricacao":"2020", "modelo":"4 portas"}`
-
-	var gol carro
-
-	if erro := json.Unmarshal([]byte(golJSON), &gol); erro != nil {
-		log.Fatal(erro)
-	}
-
-	fmt.Println(gol)
-
-	celtaJSON := `{"marca":"chevrolet", "anoFabricacao":"2010", "modelo":"4 portas"}`
-	celta := make(map[string]string)
-
-	if erro := json.Unmarshal([]byte(celtaJSON), &celta); erro != nil {
-		log.Fatal(erro)
-	}
-
-	fmt.Println(celta)
-
+	log.Fatal(http.ListenAndServe(":8888", nil))
 }
