@@ -1,36 +1,24 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"godozero/servidor"
 	"log"
-)
+	"net/http"
 
-type carro struct {
-	Marca         string `json:"marca"`
-	AnoFabricacao string `json:"anoFabricacao"`
-	Modelo        string `json:"modelo"`
-}
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
+)
 
 func main() {
 
-	golJSON := `{"marca":"volkswagen", "anoFabricacao":"2020", "modelo":"4 portas"}`
+	r := mux.NewRouter()
 
-	var gol carro
-
-	if erro := json.Unmarshal([]byte(golJSON), &gol); erro != nil {
-		log.Fatal(erro)
-	}
-
-	fmt.Println(gol)
-
-	celtaJSON := `{"marca":"chevrolet", "anoFabricacao":"2010", "modelo":"4 portas"}`
-	celta := make(map[string]string)
-
-	if erro := json.Unmarshal([]byte(celtaJSON), &celta); erro != nil {
-		log.Fatal(erro)
-	}
-
-	fmt.Println(celta)
-
+	r.HandleFunc("/pessoas", servidor.CriarUsuario).Methods(http.MethodPost)
+	r.HandleFunc("/pessoas", servidor.BuscarPessoas).Methods(http.MethodGet)
+	r.HandleFunc("/pessoa/{id}", servidor.BuscarPessoa).Methods(http.MethodGet)
+	r.HandleFunc("/pessoa/{id}", servidor.AtualizarPessoa).Methods(http.MethodPut)
+	r.HandleFunc("/pessoa/{id}", servidor.DeletarPessoa).Methods(http.MethodDelete)
+	fmt.Println("Escutando na porta 8080")
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
