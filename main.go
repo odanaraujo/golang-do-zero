@@ -8,10 +8,6 @@ import (
 
 func main() {
 
-	/*
-
-	 */
-
 	var waitGroup sync.WaitGroup
 
 	waitGroup.Add(2) //adicionando duas goroutines que ele precisa esperar terminar
