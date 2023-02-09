@@ -9,6 +9,7 @@ func main() {
 
 	canal1, canal2 := make(chan string), make(chan string)
 
+	//função anônima - vai esperar meio segundo para jogar o valor no canal
 	go func() {
 		for {
 			time.Sleep(time.Millisecond * 500)
@@ -16,6 +17,7 @@ func main() {
 		}
 	}()
 
+	//função anônima - vai esperar 2 segundos para jogar o valor no canal
 	go func() {
 		for {
 			time.Sleep(time.Second * 2)
@@ -23,12 +25,14 @@ func main() {
 		}
 	}()
 
-	for {
+	for i := 0; i < 10; i++ {
 		select {
 		case mensagemCanal1 := <-canal1:
-			fmt.Println(mensagemCanal1)
+			fmt.Println(i, ": ", mensagemCanal1)
 		case mensagemCanal2 := <-canal2:
-			fmt.Println(mensagemCanal2)
+			fmt.Println(i, ": ", mensagemCanal2)
 		}
 	}
+	close(canal1)
+	close(canal2)
 }
