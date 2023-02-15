@@ -1,12 +1,25 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"godozero/endereco"
+	"log"
 )
 
-func main() {
+type cachorro struct {
+	Nome  string `json:"nome"`
+	Raca  string `json:"raca"`
+	Idade uint   `json:"idade"`
+}
 
-	result := endereco.TipoDeEndereco("RUA nossa senhora")
-	fmt.Println(result)
+func main() {
+	cao := cachorro{"Bob", "Pastor Alemão", 4}
+
+	resultJSON, err := json.Marshal(cao)
+
+	if err != nil {
+		log.Fatal("Ocorreu um erro na linha 21")
+	}
+	fmt.Println(string(resultJSON))
+
 }
