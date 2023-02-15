@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -20,6 +21,6 @@ func main() {
 	if err != nil {
 		log.Fatal("Ocorreu um erro na linha 21")
 	}
-	fmt.Println(string(resultJSON))
+	fmt.Println(bytes.NewBuffer(resultJSON))
 
 }
