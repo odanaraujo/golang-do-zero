@@ -1,36 +1,21 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
+	"godozero/servidor"
 	"log"
+	"net/http"
 )
 
-type carro struct {
-	Marca         string `json:"marca"`
-	AnoFabricacao string `json:"anoFabricacao"`
-	Modelo        string `json:"modelo"`
-}
-
 func main() {
-
-	golJSON := `{"marca":"volkswagen", "anoFabricacao":"2020", "modelo":"4 portas"}`
-
-	var gol carro
-
-	if erro := json.Unmarshal([]byte(golJSON), &gol); erro != nil {
-		log.Fatal(erro)
-	}
-
-	fmt.Println(gol)
-
-	celtaJSON := `{"marca":"chevrolet", "anoFabricacao":"2010", "modelo":"4 portas"}`
-	celta := make(map[string]string)
-
-	if erro := json.Unmarshal([]byte(celtaJSON), &celta); erro != nil {
-		log.Fatal(erro)
-	}
-
-	fmt.Println(celta)
-
+	//contem todas as rotas para fazer a interação com o banco de dados
+	router := mux.NewRouter()
+	router.HandleFunc("/usuarios", servidor.CreaterUser).Methods(http.MethodPost)
+	router.HandleFunc("/usuarios", servidor.FindUsers).Methods(http.MethodGet)
+	router.HandleFunc("/usuario/{id}", servidor.FindUser).Methods(http.MethodGet)
+	router.HandleFunc("/usuario/{id}", servidor.UpdateUser).Methods(http.MethodPut)
+	router.HandleFunc("/usuario/{id}", servidor.DeleteUser).Methods(http.MethodDelete)
+	fmt.Println("listening at the door 5000")
+	log.Fatal(http.ListenAndServe(":5000", router))
 }
